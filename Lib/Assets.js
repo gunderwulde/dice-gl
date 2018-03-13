@@ -6,25 +6,19 @@ function Assets(){
   mainScene.Loader.Push(self);  
   xhr.onload = function(e){
     if (this.status == 200) {
-
       var str = this.response.split("\n").join(",\n");
       var elems = JSON.parse('{"elems":[' + str + "{}]}").elems;
-      for( var i=0;i<elems.length;++i){
-
+      for( var i=0;i<elems.length;++i)
         self.elements[elems[i].name]  = elems[i].url;
-      }
-
-      self.then(self);      
-      mainScene.Loader.Pop(self);
-    }else
-      self.then(self);
+    }
+    self.then(self);
+    mainScene.Loader.Pop(self);
   }
   xhr.send();
 }
 
 Assets.prototype.getURL = function(name){
   if(window.location.href =="https://dice-gl.glitch.me/")
-    return this.elements[name];
-  
+    return this.elements[name];  
 return "Assets/"+name;
 }
