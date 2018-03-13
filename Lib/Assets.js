@@ -17,7 +17,8 @@ function Assets(){
 
         self.then(self);      
         mainScene.Loader.Pop(self);
-      }
+      }else
+        self.then(self);
     }
     xhr.send();
   }else
