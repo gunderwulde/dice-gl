@@ -37,3 +37,4 @@ Scene.prototype.OnReady = function(self){
   }
   requestAnimationFrame(render);
 }
+

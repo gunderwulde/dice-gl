@@ -8,7 +8,7 @@ function Mesh(shader) {
   this.modelViewProyectionMatrix = new Matrix4();
   this.textures = [];
   this.Position(0,0,0);
-  this.Rotation(0,0,0);
+  this.Rotation(new Quaternion());
 }
 
 Mesh.prototype.Load = function(url, onLoad ){
@@ -86,12 +86,16 @@ Mesh.prototype.Draw = function(scene){
   shader.Use(gl);
   
   if(this.dirty) {
-    this.modelMatrix.rotationEuler(this.rx, this.ry, this.rz);
-    this.modelMatrix.position( this.px, this.py, this.pz);
-    this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
-    this.normalMatrix.rotationEuler( this.rx, this.ry, this.rz);
+    
+    var rotationMatrix = new Matrix4();
+    rotationMatrix.fromQuaternion(this.rotation);
+    var positionMatrix = new Matrix4();
+    positionMatrix.position( this.px, this.py, this.pz);
+    this.modelMatrix.multiply(positionMatrix,rotationMatrix );
+    this.normalMatrix.fromQuaternion(this.rotation);
     this.dirty=false;
   }  
+    this.modelViewProyectionMatrix.multiply(scene.camera.viewProjectionMatrix,this.modelMatrix );
 
   shader.setNormalMatrix(this.normalMatrix);
   shader.setModelViewProjectionMatrix(this.modelViewProyectionMatrix);
@@ -104,5 +108,4 @@ Mesh.prototype.Draw = function(scene){
 }
 
 Mesh.prototype.Position = function (x,y,z) { this.px=x; this.py=y; this.pz=z; this.dirty = true;}
-Mesh.prototype.Rotation = function (x,y,z) { this.rx=x* Math.PI / 180; this.ry=y* Math.PI / 180; this.rz=z* Math.PI / 180; this.dirty = true;}
-Mesh.prototype.Rotate   = function (x,y,z) { this.rx+=x* Math.PI / 180; this.ry+=y* Math.PI / 180; this.rz+=z* Math.PI / 180; this.dirty = true;}
+Mesh.prototype.Rotation = function (q) { this.rotation=q; this.dirty = true;}
