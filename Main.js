@@ -33,6 +33,7 @@ function main() {
   var scene = new Scene();
   
   scene.results = new Results();
+
   scene.results.Load( loadResource("dice.results") );
     
   var shader = new Shader("Default.shader", function(shader){    
