@@ -6,3 +6,8 @@ html, body {
   overflow: hidden;
   display: block;
 }
+/*
+canvas{
+	background: linear-gradient(#112F37,#0B0B0B);
+}
+*/
